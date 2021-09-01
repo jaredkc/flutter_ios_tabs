@@ -50,12 +50,12 @@ class BottomTabs extends StatefulWidget {
 }
 
 class TabState extends State<BottomTabs> {
-  final myKey = GlobalKey<TabState>();
   final CupertinoTabController _controller = CupertinoTabController();
+  int _previousIndex = 0;
 
   void onItemTapped(int index) {
     // Return to first screen if not switching tabs.
-    if (_controller.index == index) {
+    if (_previousIndex == index) {
       switch (index) {
         case 0:
           homeTabKey.currentState?.popUntil((r) => r.isFirst);
@@ -71,6 +71,7 @@ class TabState extends State<BottomTabs> {
 
     setState(() {
       _controller.index = index;
+      _previousIndex = index;
     });
   }
 
@@ -89,7 +90,6 @@ class TabState extends State<BottomTabs> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       controller: _controller,
-      key: myKey,
       tabBar: CupertinoTabBar(
         onTap: onItemTapped,
         items: const <BottomNavigationBarItem>[
